@@ -34,7 +34,8 @@ Este proyecto consiste en el desarrollo de un servidor web en Python para la ges
 - database/: base de datos SQLite de ejemplo
 - requirements.txt: archivo de requerimiento de librerías
 
-⚠️ **Nota:** Este repositorio está diseñado para mostrar el código fuente.  
+## Nota
+Este repositorio está diseñado para mostrar el código fuente.  
 No es necesario ejecutar el proyecto. El funcionamiento está documentado en la memoria adjunta, donde consta el siguiente contenido:
 - objetivo y alcance del proyecto.
 - stack técnológico.
