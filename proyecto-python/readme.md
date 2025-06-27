@@ -4,7 +4,8 @@ Este proyecto consiste en el desarrollo de un servidor web en Python para la ges
 
 ## Funcionalidades principales
 
-- Gestión de artículos, ventas, pedidos, proveedores, usuarios y análisis financiero
+- Gestión de artículos, ventas, pedidos, proveedores, usuarios y análisis financiero.
+- Consulta por parte de los clientes de las compras realizadas y análisis financiero.
 
 ## Stack tecnológico.
 - Python
