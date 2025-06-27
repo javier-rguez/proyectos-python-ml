@@ -12,5 +12,5 @@ Proyectos orientados a Machine Learning y ciencia de datos, con implementación 
 Ejemplos:
 - Proyecto final para el análisis del grado de lesividad en accidentes de tráfico (especialización IA).
 - Trabajo de aplicación de árboles de decisión (especialización ML).
-- Trabajo de aplicación de  interpretabilidad SHAP (especialización ML).
+- Trabajo de aplicación de interpretabilidad con SHAP (especialización ML).
 - Trabajo de aplicación de la regularizacion Lasso y Ridge (especialización ML).
