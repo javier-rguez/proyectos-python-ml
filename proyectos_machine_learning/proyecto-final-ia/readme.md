@@ -21,7 +21,7 @@ Actualmente estoy cursando la especialización en **Machine Learning**, donde es
 
 ## Dataset
 
-El conjunto de datos es de acceso público y se encuentra en la carpeta `datasets/`.
+El conjunto de datos es de acceso público y se encuentra en la carpeta `datasets/`. Ha sido extraído de la web de datos abiertos de la Comunidad de Madrid.
 
 ## Documentación
 
