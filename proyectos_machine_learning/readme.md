@@ -1,6 +1,6 @@
 ## Portfolio de Proyectos de Machine Learning
 
-Este directorio contiene una selección de proyectos desarrollados durante mi formación en Inteligencia Artificial y aprendizaje automático. Cada proyecto incluye su notebook, dataset y una breve explicación.
+Este directorio contiene una selección de pequeños proyectos desarrollados durante mi formación en Inteligencia Artificial y aprendizaje automático. Cada proyecto incluye su notebook, dataset y una breve explicación.
 
 ### Lista de proyectos
 
