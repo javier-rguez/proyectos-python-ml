@@ -2,8 +2,8 @@
 
 Este repositorio contiene una selección de proyectos desarrollados durante mi formación en programación en Python e Inteligencia Artificial. Está dividido en dos secciones:
 
-### 📂 proyectos-python/
-Proyectos enfocados en el desarrollo con Python. Incluyen aplicaciones, automatización de tareas y manejo de datos.
+### 📂 proyecto-python/
+Proyecto enfocado en el desarrollo con Python. Incluyen aplicaciones, automatización de tareas y manejo de datos.
 
 Ejemplos:
 - 
