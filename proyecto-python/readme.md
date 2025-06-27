@@ -24,11 +24,14 @@ Este proyecto consiste en el desarrollo de un servidor web en Python para la ges
 ## Estructura del proyecto
 
 - main.py: punto de entrada del servidor
-- models.py: definición de modelos ORM
+- models.py: definición de modelos
 - db.py: conexión a la base de datos
 - forms.py: formularios para interacción con el usuario
+- functions.py: funciones
+- static/: diseño css
 - templates/: plantillas HTML
-- SuministrosInformaticos.db`: base de datos SQLite de ejemplo
+- database/: base de datos SQLite de ejemplo
+- requirements.txt: archivo de requerimiento de librerías
 
 **Nota:** Este repositorio está diseñado para mostrar el código fuente.  
 No es necesario ejecutar el proyecto; el funcionamiento está documentado en la memoria adjunta, donde consta el siguiente contenido:
