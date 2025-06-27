@@ -5,7 +5,7 @@ Este directorio contiene una selección de pequeños proyectos desarrollados dur
 ### Lista de proyectos
 
 1. **Proyecto Final de la Especialización en IA**  
-   Aplicación completa de técnicas análisis, preprocesamiento, modelado y predicción en un caso real (análisis de lesividad en accidentes en la Comunidad de Madrid).
+   Aplicación completa de técnicas análisis, preprocesamiento, modelado y predicción en un caso real (análisis de lesividad en accidentes de tráfico en la Comunidad de Madrid).
 
 2. **Árboles de Decisión**  
    Implementación y visualización de árboles de clasificación para problemas supervisados.
