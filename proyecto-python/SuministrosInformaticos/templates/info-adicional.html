@@ -1,0 +1,205 @@
+<!-- plantilla que muestra la información adicional de un artículo seleccionado-->
+<!-- plantilla hija: usamos Jinja para aplicar herencia en html -->
+{% extends 'articulos.html' %} <!-- hereda de articulos.html para aprovechar su cabecera -->
+
+{% block title %}
+    <title>Administrador: acceso a info adicional de artículo</title>
+{% endblock %}
+
+{% block content %}
+    <table class="table table-hover">
+      <thead> <!--cabecera principal de nuestra tabla de artículos-->
+        <tr class="table-info">
+          <th scope="col">Id</th>
+          <th scope="col">Referencia</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">Marca</th>
+          <th scope="col">Precio</th>
+          <th scope="col">Stock</th>
+          <th scope="col">Categoría</th>
+          <th scope="col">Descripción</th>
+          <th scope="col">Ubicación</th>
+          <th scope="col">Proveedor</th>
+          <th scope="col">Precio prov.</th>
+          <th scope="col" class="text-center">
+              <!--botón del enlace para que nos lleva a la pantalla anterior-->
+              <a href="/protected_admin/articulos?page=1" title="Volver">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="white"
+                       class="bi bi-plus-circle" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16
+                        0m-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5
+                        0 1 1 .708.708L5.707 7.5z"/>
+                  </svg>
+              </a>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <!--usamos Jinja para introducir código Python en html-->
+        <tr>
+          <th scope="row">{{ articulo.id_articulo }}</th>
+          <td>{{ articulo.referencia }}</td>
+          <td>{{ articulo.nombre }}</td>
+          <td>{{ articulo.marca }}</td>
+          <td>{{ articulo.precio_venta }}</td>
+          <td>{{ articulo.stock }}</td>
+          <td>{{ articulo.categoria }}</td>
+          <td>{{ articulo.descripcion }}</td>
+          <td>{{ articulo.ubicacion }}</td>
+          <td>{{ articulo.rel_articulo_proveedor.nombre }}</td>
+          <td>{{ articulo.precio_proveedor }}</td>
+          <td class="text-center">
+              <!--icono de editar que permite acceder a la ventana de edición del artículo-->
+              <a href="/protected_admin/articulos/editar_articulo/{{articulo.id_articulo}}"  title="Editar artículo">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                       class="bi bi-pencil" viewBox="0 0 16 16">
+                    <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0
+                        0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5
+                        3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528
+                        3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0
+                        1-.468-.325"/>
+                  </svg>
+              </a>
+              <!--icono de eliminar que permite eliminar el artículo en  cuestión-->
+              <a href="/protected_admin/articulo/confirmar_eliminar/{{articulo.id_articulo}}" title="Eliminar artículo">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                       class="bi bi-x-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647
+                        2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5
+                        0 0 1 0-.708"/>
+                  </svg>
+              </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!--Inicio parte dínamica de información adicional dependiendo de la categoria del articulo-->
+      <div>
+          <!--si la categoría del nuevo artículo es Ordenadores y Tablets añadimos los campos específicos
+              correspondientes-->
+          {% if articulo.categoria == 'Ordenadores y Tablets' %}
+          <table style="width: 60%;" align="left">
+              <thead> <!--cabecera principal de nuestra tabla de artículos-->
+                <tr class="table-info">
+                  <th class="text-center" scope="col">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                           class="bi bi-info-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                        <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105
+                            1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275
+                            0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                    </svg>
+                  </th>
+                  <th scope="col">Resolución</th>
+                  <th scope="col">Procesador</th>
+                  <th scope="col">Memoria</th>
+                  <th scope="col">Almacenamiento</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!--usamos Jinja para introducir código Python en html-->
+                <tr>
+                  <td></td>
+                  <td>{{ articulo.resolucion }}</td>
+                  <td>{{ articulo.procesador }}</td>
+                  <td>{{ articulo.memoria }}</td>
+                  <td>{{ articulo.almacenamiento }}</td>
+                </tr>
+              </tbody>
+          </table>
+
+          <!--si la categoría del nuevo artículo es Monitores añadimos los campos específicos para esta categoria-->
+          {% elif articulo.categoria == 'Monitores' %}
+          <table style="width: 60%;" align="left">
+              <thead> <!--cabecera principal de nuestra tabla de artículos-->
+                <tr class="table-info">
+                  <th class="text-center" scope="col">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                           class="bi bi-info-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                        <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105
+                            1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275
+                            0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                    </svg>
+                  </th>
+                  <th scope="col">Tamaño</th>
+                  <th scope="col">Resolución</th>
+                  <th scope="col">Altura ajustable</th>
+                  <th scope="col">Conexiones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!--usamos Jinja para introducir código Python en html-->
+                <tr>
+                  <td></td>
+                  <td>{{ articulo.tamanio }}</td>
+                  <td>{{ articulo.resolucion }}</td>
+                  <td>{{ articulo.altura_ajustable }}</td>
+                  <td>{{ articulo.conexiones }}</td>
+                </tr>
+              </tbody>
+          </table>
+
+          <!--si la categoría del nuevo artículo es Almacenamiento añadimos los campos específicos para esta categoria-->
+          {% elif articulo.categoria == 'Almacenamiento' %}
+          <table style="width: 60%;" align="left">
+              <thead> <!--cabecera principal de nuestra tabla de artículos-->
+                <tr class="table-info">
+                  <th class="text-center" scope="col">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                           class="bi bi-info-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                        <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105
+                            1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275
+                            0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                    </svg>
+                  </th>
+                  <th scope="col">Tipo</th>
+                  <th scope="col">Capacidad</th>
+                  <th scope="col">Conexiones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!--usamos Jinja para introducir código Python en html-->
+                <tr>
+                  <td></td>
+                  <td>{{ articulo.tipo }}</td>
+                  <td>{{ articulo.capacidad }}</td>
+                  <td>{{ articulo.conexiones }}</td>
+                </tr>
+              </tbody>
+          </table>
+
+          <!--si la categoría del nuevo artículo es Redes añadimos los campos específicos para esta categoria-->
+          {% else %}
+          <table style="width: 60%;" align="left">
+              <thead> <!--cabecera principal de nuestra tabla de artículos-->
+                <tr class="table-info">
+                  <th class="text-center" scope="col">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                           class="bi bi-info-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                        <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105
+                            1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275
+                            0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                    </svg>
+                  </th>
+                  <th scope="col">Tipo</th>
+                  <th scope="col">Conexiones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!--usamos Jinja para introducir código Python en html-->
+                <tr>
+                  <td></td>
+                  <td>{{ articulo.tipo }}</td>
+                  <td>{{ articulo.conexiones }}</td>
+                </tr>
+              </tbody>
+          </table>
+          {% endif %}
+      </div>
+      <!-- fin de parte dinámica de información adicional dependiendo de la categoría del artículo-->
+{% endblock %}

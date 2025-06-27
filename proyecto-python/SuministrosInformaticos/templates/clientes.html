@@ -1,0 +1,180 @@
+<!--plantilla padre base clientes.html utilizada por las siguientes plantillas hijas:
+    - crear-cliente.html
+    - confirmar-eliminar-cliente.html
+    - editar-cliente.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% block title %}
+    <title>Administrador: acceso a clientes</title>
+    {% endblock %}
+     <!-- Hoja de estilo propia -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css')}}">
+
+    <!-- Tema de Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/lumen/bootstrap.min.css"
+          integrity="sha384-GzaBcW6yPIfhF+6VpKMjxbTx6tvR/yRd/yJub90CqoIn2Tz4rRXlSpTFYMKHCifX" crossorigin="anonymous">
+</head>
+<body>
+
+<!-- Creamos cabecera con una barra de navegación -->
+    <h1 class="display-4 text-center mt-4">Suministros Informáticos</h1>
+    <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+        <div class="container-fluid">
+            <!-- botón de 'home' que permite volver a la página principal de la vista admin-->
+            <a href="/protected_admin" title="Inicio">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" color="white" fill="currentColor"
+                     class="bi bi-house-fill" viewBox="0 0 20 20">
+                    <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0
+                        0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293z"/>
+                    <path d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293z"/>
+                </svg>
+            </a>
+            <div class="collapse navbar-collapse" id="navbarColor01">
+                <!-- listamos las opciones a elegir en el menú de la barra de navegación -->
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a style="font-size: 18px;" class="nav-link text-light"
+                           href="/protected_admin/articulos?page=1">Artículos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a style="font-size: 20px;" class="nav-link text-light text-bold-underline"
+                           href="/protected_admin/clientes?page=1">Clientes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a style="font-size: 18px;" class="nav-link text-light"
+                           href="/protected_admin/ventas?page=1">Ventas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a style="font-size: 18px;" class="nav-link text-light"
+                           href="/protected_admin/proveedores?page=1">Proveedores</a>
+                    </li>
+                    <li class="nav-item">
+                        <a style="font-size: 18px;" class="nav-link text-light"
+                           href="/protected_admin/pedidos?page=1">Pedidos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a style="font-size: 18px;" class="nav-link text-light"
+                           href="/protected_admin/nuevo_analisis">Análisis Financiero</a>
+                    </li>
+                    <li class="nav-item">
+                        <a style="font-size: 18px;" class="nav-link text-light"
+                           href="/protected_admin/usuarios">Usuarios</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="navbar-nav ms-auto d-flex align-items-center">
+                <!-- mostramos el usuario logueado -->
+                <div class="navbar-text">
+                    <em class="text-white">Bienvenido: {{ current_user.username }}</em>
+                </div>
+                <!-- botón para hacer logout -->
+                <a href="/logout" class="nav-link ms-3" title="Cerrar sesión">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" color="white" fill="currentColor"
+                         class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5
+                         0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5
+                         14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z"/>
+                        <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293
+                        7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </nav>
+    <!------------>
+    {% block content %}
+    <!------------>
+    <table class="table table-hover">
+      <thead> <!--cabecera principal de nuestra tabla de clientes-->
+        <tr class="table-info">
+          <th scope="col">Id</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">NIF</th>
+          <th scope="col">Dirección</th>
+          <th scope="col">Contacto</th>
+          <th scope="col">Tlf fijo</th>
+          <th scope="col">Tlf móvil</th>
+          <th scope="col">Correo</th>
+          <th scope="col">Forma de pago</th>
+          <th scope="col" class="text-center">
+              <!--botón del enlace para crear un nuevo cliente, en cual nos lleva a la ruta que nos carga la plantilla
+                crear-cliente.html-->
+              <a href="/protected_admin/clientes/crear_cliente" title="Añadir nuevo cliente">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="white" class="bi bi-plus-circle"
+                       viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5
+                        0 0 1 8 4"/>
+                  </svg>
+              </a>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <!--recorremos la lista de clientes usando Jinja e introducimos los datos fila por fila -->
+        {% for cliente in lista_clientes %}
+        <tr>
+          <th scope="row">{{ cliente.id_cliente }}</th>
+          <td>{{ cliente.nombre }}</td>
+          <td>{{ cliente.nif }}</td>
+          <td>{{ cliente.direccion }}</td>
+          <td>{{ cliente.contacto }}</td>
+          <td>{{ cliente.tlf_fijo }}</td>
+          <td>{{ cliente.tlf_movil }}</td>
+          <td>{{ cliente.correo }}</td>
+          <td>{{ cliente.forma_pago }}</td>
+          <td class="text-center">
+              <!--icono de editar que permite acceder a la ventana de edición de cliente-->
+              <a href="/protected_admin/clientes/editar_cliente/{{cliente.id_cliente}}"  title="Editar cliente">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                       class="bi bi-pencil" viewBox="0 0 16 16">
+                    <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0
+                        0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5
+                        3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528
+                        3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                  </svg>
+              </a>
+              <!--icono de eliminar que permite eliminar el cliente en  cuestión-->
+              <a href="/protected_admin/cliente/confirmar_eliminar/{{cliente.id_cliente}}" title="Eliminar cliente">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                       class="bi bi-x-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647
+                        2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5
+                        0 0 1 0-.708"/>
+                  </svg>
+              </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <div class="container">
+        <div class="mt-3">
+            <!-- utilización el método pagination a través de Jinja en html para mostrar paginación-->
+            {{ pagination.links }}
+        </div>
+        <div>
+            <!--usamos el sistema 'flash messages' para mostrar un mensaje de éxito tras la creación, edición o
+            eliminación de un registro-->
+            {% with messages = get_flashed_messages(with_categories=True) %}
+              {% if messages %}
+                <ul class="flash-messages">
+                  {% for category, message in messages %}
+                    <li class="alert alert-dismissible alert-{{ category }}">
+                      {{ message }}
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+    <!------------>
+    {% endblock %}
+    <!------------>
+</body>
+</html>

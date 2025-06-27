@@ -1,0 +1,188 @@
+<!-- plantilla hija: usamos Jinja para aplicar herencia en html -->
+{% extends 'pedidos.html' %} <!-- hereda de pedidos.html para aprovechar su cabecera -->
+
+{% block title %}
+    <title>Administrador: añadir artículo a pedido</title>
+{% endblock %}
+
+{% block content %}
+    <table class="table table-hover">
+      <thead> <!--cabecera principal de nuestra tabla de pedidos-->
+        <tr class="table-dark size_row_ventas">
+          <th scope="col">Nº Pedido: {{ pedido.id_pedido }}</th>
+          <th scope="col">Fecha: {{ pedido.fecha.strftime('%d-%m-%Y') }}</th>
+          <th scope="col">Proveedor: {{ pedido.rel_proveedor.nombre }}</th>
+          <th scope="col">Total Neto: {{ pedido.total_neto | round(2)}}€</th>
+          <th scope="col">Impuestos: {{ (pedido.total_neto * pedido.impuesto) | round(2) }}€</th> <!-- limitamos a dos decimales -->
+          <th scope="col">Total Pedido: {{ pedido.total }}€</th>
+          <th scope="col"></th>
+        </tr>
+        <tr class="table-info">
+          <th scope="col"></th>
+          <th scope="col">Referencia</th>
+          <th scope="col">Artículo</th>
+          <th scope="col">Cantidad</th>
+          <th scope="col">Precio proveedor</th>
+          <th scope="col">Total artículo</th>
+          <th scope="col" class="text-center">
+              <!--botón del enlace para que nos lleva a la pantalla anterior-->
+              <a href="/protected_admin/pedidos" title="Volver">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="white" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
+                  </svg>
+              </a>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <!--usamos Jinja para introducir código Python en html-->
+        {% for detalle_pedido in articulos %}
+        <tr>
+          <th scope="row">{{ loop.index }}</th>
+          <td>{{ detalle_pedido.rel_pedido_articulo.referencia }}</td>
+          <td>{{ detalle_pedido.rel_pedido_articulo.nombre }}</td>
+          <td>{{ detalle_pedido.cantidad }}</td>
+          <td>{{ detalle_pedido.rel_pedido_articulo.precio_proveedor }}€</td>
+          <td>{{ (detalle_pedido.cantidad * detalle_pedido.rel_pedido_articulo.precio_proveedor) | round(2) }}€</td>
+          <td class="text-center">
+              <!--icono de eliminar que permite eliminar el artículo en cuestión del pedido actual-->
+              <a href="/protected_admin/crear_pedido/eliminar_articulo/{{detalle_pedido.id_detalle_pedido}}">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                       class="bi bi-x-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647
+                        2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5
+                        0 0 1 0-.708"/>
+                  </svg>
+              </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div class="container card border-primary mb-3 justify-content-center" style="max-width: 30rem;">
+        <div class="card-body">
+            <h3 class="card-title">Añadir artículo a pedido</h3>
+        </div>
+        <!-- formulario realizado con Flask WTF que envía los datos introducidos por el usuario a la ruta indicada-->
+        <form method="post" novalidate> <!--ruta del formulario-->
+          {{ form.hidden_tag() }} <!--método que genera un campo oculto que contiene un token CSRF para proteger la app contra ataques CSRF-->
+          <fieldset>
+            <h5><b>Introduzca los datos solicitados:</b></h5>
+            <div>
+              {{ form.referencia_nombre.label }}
+              {{ form.referencia_nombre(class="form-control", id="referencia_nombre", placeholder="Introduzca artículo o referencia", autocomplete="off") }}
+              {% if form.referencia_nombre.errors %}
+                  {% for error in form.referencia_nombre.errors %}
+                  <span style="color: red;">{{ error }}</span>
+                  {% endfor %}
+              {% endif %}
+              <!-- input adicional con id_articulo oculto que se cumplimenta automáticamente al seleccionar un articulo-->
+              {{ form.id_articulo(id="id_articulo") }}
+              <!-- datalist para mostrar la lista de articulos encontrados según los caracteres introducidos-->
+              <datalist id="lista_articulos"></datalist>
+            </div>
+            <!-- input adicional con id_proveedor oculto necesario para filtrar por los artículos del proveeedor-->
+            <input type="hidden" id="id_proveedor" value="{{ pedido.id_proveedor }}">
+            <div>
+              {{ form.cantidad.label }}
+              {{ form.cantidad(class="form-control", placeholder="Cantidad") }}
+              {% if form.cantidad.errors %}
+                  {% for error in form.cantidad.errors %}
+                  <span style="color: red;">{{ error }}</span>
+                  {% endfor %}
+              {% endif %}
+            </div>
+
+            <div class="margin_top_button">
+                {{ form.submit(class="btn btn-primary btn-block") }}
+            </div>
+            <div></div>
+            <div class="margin_top_button">
+                <a href="/protected_admin/pedidos/detalle_pedido/{{pedido.id_pedido}}">
+                        <button type="button" class="btn btn-dark btn-block">Guardar Pedido</button>
+                </a>
+            </div>
+
+          </fieldset>
+        </form>
+
+
+        <script>
+            // Asignamos el atributo 'list' al campo de referencia o nombre
+            document.getElementById("referencia_nombre").setAttribute("list", "lista_articulos");
+
+            // Función para buscar artículos en el servidor teniendo en cuenta el id del proveedor
+            async function buscarArticulos() {
+                const input = document.getElementById('referencia_nombre');
+                const lista = document.getElementById('lista_articulos');
+                const term = input.value;
+                const idProveedor = document.getElementById('id_proveedor').value;
+
+                if (term.length > 1 && idProveedor) {
+                    try {
+                        const response = await fetch(`/buscar_articulo?term=${encodeURIComponent(term)}&id_proveedor=${idProveedor}`);
+                        if (response.ok) {
+                            const resultados = await response.json();
+                            lista.innerHTML = ''; // Limpiar opciones anteriores
+
+                            resultados.forEach(articulo => {
+                                const option = document.createElement('option');
+                                option.value = `${articulo.referencia} - ${articulo.nombre}`;
+                                option.dataset.id = articulo.id; // Guardar ID del artículo
+                                lista.appendChild(option);
+                            });
+                        } else {
+                            console.error("Error en la respuesta del servidor");
+                        }
+                    } catch (error) {
+                        console.error("Error en la búsqueda:", error);
+                    }
+                }
+            }
+
+
+            // Escuchamos cambios en el campo de referencia o nombre
+            document.getElementById('referencia_nombre').addEventListener('input', function() {
+                buscarArticulos();
+
+                // Asignamos id_articulo al campo oculto si coincide exactamente
+                const option = Array.from(document.getElementById('lista_articulos').options)
+                                    .find(opt => opt.value === this.value);
+                if (option) {
+                    document.getElementById('id_articulo').value = option.dataset.id;
+                } else {
+                    document.getElementById('id_articulo').value = '';  // Limpiar si no hay coincidencia exacta
+                }
+            });
+
+            // Validamos que el artículo seleccionado sea válido antes de enviar el formulario
+            document.getElementById('form-add-articulo').addEventListener('submit', function(event) {
+                const idArticulo = document.getElementById('id_articulo').value;
+                if (!idArticulo) {
+                    event.preventDefault();
+                    alert('Por favor, seleccione un artículo válido de la lista.');
+                }
+            });
+        </script>
+
+    </div>
+    <div class="container">
+        <div>
+            <!--usamos el sistema 'flash messages' para mostrar un mensaje de éxito tras la creación, edición o
+            eliminación de un registro-->
+            {% with messages = get_flashed_messages(with_categories=True) %}
+              {% if messages %}
+                <ul class="flash-messages">
+                  {% for category, message in messages %}
+                    <li class="alert alert-dismissible alert-{{ category }}">
+                      {{ message }}
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+{% endblock %}

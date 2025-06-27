@@ -1,0 +1,70 @@
+<!-- plantilla hija: usamos Jinja para aplicar herencia en html -->
+{% extends 'pedidos.html' %} <!-- hereda de pedidos.html para aprovechar su cabecera -->
+
+{% block title %}
+    <title>Administrador: eliminar pedido</title>
+{% endblock %}
+
+{% block content %}
+
+    <table class="table table-hover">
+      <thead> <!--cabecera principal de nuestra tabla de pedidos-->
+        <tr class="table-info">
+          <th scope="col">Id</th>
+          <th scope="col">Fecha</th>
+          <th scope="col">Cliente</th>
+          <th scope="col">Total neto</th>
+          <th scope="col">Impuesto</th>
+          <th scope="col">Total</th>
+          <th scope="col" class="text-center">
+              <a href="/protected_admin/pedidos" title="Volver">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="white" class="bi bi-plus-circle"
+                       viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16
+                        0m-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5
+                        0 1 1 .708.708L5.707 7.5z"/>
+                  </svg>
+              </a>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <!--usamos Jinja para introducir código Python en html-->
+        <tr>
+          <th scope="row">{{ registro.id_pedido }}</th>
+          <td>{{ registro.fecha.strftime('%d-%m-%Y') }}</td>
+          <td>{{ registro.rel_proveedor.nombre }}</td>
+          <td>{{ registro.total_neto }}</td>
+          <td>{{ registro.impuesto | round(2) }}</td>
+          <td>{{ registro.total }}</td>
+          <td class="text-center">
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!--Muestra los botones para confirmar o cancelar la eliminación del pedido en una card-->
+    <div>
+        <div class="container card border-primary mb-3 justify-content-center" style="max-width: 30rem;">
+            <div class="card-body">
+                <h3 class="card-title">Eliminar pedido</h3>
+                <h6>¿Está seguro que desea eliminar el pedido seleccionada?</h6>
+            </div>
+            <form action="{{ url_for('eliminar_registro', area='pedido', id_registro=registro.id_pedido) }}" method="post" novalidate> <!--ruta del formulario-->
+                <!--método que genera un campo oculto que contiene un token CSRF para proteger la app contra ataques CSRF-->
+                {{ form.hidden_tag() }}
+                <fieldset>
+                    <div class="margin_top_button">
+                        {{ form.submit(class="btn btn-primary btn-block") }}
+                    </div>
+                    <div></div>
+                    <div class="margin_top_button">
+                        <a href="/protected_admin/pedidos">
+                            <button type="button" class="btn btn-secondary btn-block">Cancelar</button>
+                        </a>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+{% endblock %}

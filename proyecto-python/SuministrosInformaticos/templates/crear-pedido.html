@@ -1,0 +1,112 @@
+<!-- plantilla hija: usamos Jinja para aplicar herencia en html -->
+{% extends 'pedidos.html' %} <!-- hereda de ventas.html para aprovechar su cabecera -->
+
+{% block title %}
+    <title>Administrador: crear pedido</title>
+{% endblock %}
+
+{% block content %}
+
+    <div class="container card border-primary mb-3 justify-content-center" style="max-width: 30rem;">
+        <div class="card-body">
+            <div class="text-right">
+                <!--botón del enlace para que nos lleva a la pantalla anterior-->
+                <a href="/protected_admin/pedidos" title="Volver">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
+                  </svg>
+                </a>
+            </div>
+            <h3 class="card-title">Nuevo pedido</h3>
+        </div>
+        <!-- formulario realizado con Flask WTF que envía los datos introducidos por el usuario-->
+        <form method="post" novalidate> <!--ruta del formulario-->
+          {{ form.hidden_tag() }} <!--método que genera un campo oculto que contiene un token CSRF para proteger la app contra ataques CSRF-->
+          <fieldset>
+            <h5><b>Introduzca los datos solicitados:</b></h5>
+            <div>
+              {{ form.nombre_proveedor.label }}
+              {{ form.nombre_proveedor(id="nombre_proveedor", class="form-control", placeholder="Introduzca proveedor", autocomplete="off") }}
+              {% if form.nombre_proveedor.errors %}
+                  {% for error in form.nombre_proveedor.errors %}
+                  <span style="color: red;">{{ error }}</span>
+                  {% endfor %}
+              {% endif %}
+              <!-- input adicional con id_proveedor oculto que se cumplimenta automáticamente al seleccionar un proveedor-->
+              {{ form.id_proveedor(id="id_proveedor") }}
+              <!-- datalist para mostrar la lista de proveedores encontrados según los caracteres introducidos-->
+              <datalist id="lista_proveedores"></datalist>
+            </div>
+
+            <div>
+              {{ form.impuesto.label }}
+              {{ form.impuesto(class="form-control", placeholder="Impuesto") }}
+              {% if form.impuesto.errors %}
+                  {% for error in form.impuesto.errors %}
+                  <span style="color: red;">{{ error }}</span>
+                  {% endfor %}
+              {% endif %}
+            </div>
+            <div class="margin_top_button">
+                {{ form.submit(class="btn btn-primary btn-block") }}
+            </div>
+          </fieldset>
+    </form>
+
+    <!--La función 'buscarproveedores()' se ejecuta cuando el usuario introduce datos en el campo de búsqueda proveedor.
+        Usa API Fetch para enviar la consulta a la base de datos en tiempo real y luego muestra las opciones de proveedores
+        en el 'datalist'. Al seleccionar un proveedor, guarda su ID en el campo oculto 'id_proveedor'-->
+    <script>
+        // agregamos el atributo 'list' al campo input 'nombre_proveedor'
+        document.getElementById("nombre_proveedor").setAttribute("list", "lista_proveedores");
+
+        // Llamamos a función para buscar la lista de proveedores y mostramos las sugerencias en el datalist
+        async function buscarproveedores() {
+            const input = document.getElementById('nombre_proveedor');
+            const lista = document.getElementById('lista_proveedores');
+            const term = input.value;
+
+            // Iniciamos búsqueda en la base de datos a partir del segundo caracter introducido
+            if (term.length > 1) {
+                try {
+                    const response = await fetch(`/buscar_proveedor?term=${term}`);
+                    // si hay respuesta del servidor
+                    if (response.ok) {
+                        const resultados = await response.json();
+
+                        // Limpiamos opciones anteriores
+                        lista.innerHTML = '';
+
+                        // Agregamos nuevas opciones de proveedores al datalist
+                        resultados.forEach(proveedor => {
+                            const option = document.createElement('option');
+                            option.value = proveedor.nombre;  // Mostrar nombre en el datalist
+                            option.dataset.id = proveedor.id;  // Guardar ID en atributo personalizado
+                            lista.appendChild(option);
+                        });
+                    } else {
+                        console.error("Error en la respuesta del servidor");
+                    }
+                } catch (error) {
+                    console.error("Error en la búsqueda:", error);
+                }
+            }
+        }
+
+        // Escuchamos cambios en el campo de entrada 'nombre_proveedor'
+        document.getElementById('nombre_proveedor').addEventListener('input', function() {
+            buscarproveedores();
+
+            // Al seleccionar un proveedor, guarda su ID en el campo oculto 'id_proveedor'
+            const option = Array.from(document.getElementById('lista_proveedores').options)
+                                .find(opt => opt.value === this.value);
+            if (option) {
+                document.getElementById('id_proveedor').value = option.dataset.id;
+            } else {
+                document.getElementById('id_proveedor').value = '';  // Limpia si no hay selección
+            }
+
+        });
+    </script>
+    </div>
+{% endblock %}

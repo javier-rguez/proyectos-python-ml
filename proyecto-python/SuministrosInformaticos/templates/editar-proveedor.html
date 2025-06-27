@@ -1,0 +1,98 @@
+<!-- plantilla hija: usamos Jinja para aplicar herencia en html -->
+{% extends 'proveedores.html' %} <!-- hereda de proveedores.html para aprovechar su cabecera -->
+
+{% block title %}
+    <title>Administrador: editar proveedor</title>
+{% endblock %}
+
+{% block content %}
+
+    <div class="container card border-primary mb-3 justify-content-center" style="max-width: 30rem;">
+        <div class="card-body">
+            <div class="text-right">
+                <!--botón del enlace para que nos lleva a la pantalla anterior-->
+                <a href="/protected_admin/proveedores" title="Volver">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor"
+                       class="bi bi-plus-circle" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16
+                        0m-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5
+                        0 1 1 .708.708L5.707 7.5z"/>
+                  </svg>
+                </a>
+            </div>
+            <h3 class="card-title">Editar proveedor</h3>
+        </div>
+        <!-- formulario realizado con Flask WTF que envía los datos introducidos por el usuario a la ruta indicada-->
+        <form method="post" novalidate>
+          <!--método que genera un campo oculto que contiene un token CSRF para proteger la app contra ataques CSRF-->
+          {{ form.hidden_tag() }}
+          <fieldset>
+            <h5><b>Cumplimente solamente los campos que desea modificar.</b></h5>
+            <!--Enviamos como parámetro oculto el parámetro id_proveedor-->
+            <input type="hidden" id="id_proveedor" name="id_proveedor" value="{{ proveedor.id_proveedor }}">
+            <div>
+              {{ form.nombre.label }}
+              {{ form.nombre(class="form-control", placeholder="Nombre") }}
+              {% if form.nombre.errors %}
+                  {% for error in form.nombre.errors %}
+                  <span style="color: red;">{{ error }}</span>
+                  {% endfor %}
+              {% endif %}
+            </div>
+            <div>
+              {{ form.nif.label }}
+              {{ form.nif(class="form-control", placeholder="NIF") }}
+              {% if form.nif.errors %}
+                  {% for error in form.nif.errors %}
+                  <span style="color: red;">{{ error }}</span>
+                  {% endfor %}
+              {% endif %}
+            </div>
+            <div>
+              {{ form.direccion.label }}
+              {{ form.direccion(class="form-control", placeholder="Dirección") }}
+            </div>
+            <div>
+              {{ form.contacto.label }}
+              {{ form.contacto(class="form-control", placeholder="Contacto") }}
+            </div>
+            <div>
+                {{ form.tlf_fijo.label }}
+                {{ form.tlf_fijo(class="form-control", placeholder="Teléfono fijo") }}
+              </div>
+              <div>
+                {{ form.tlf_movil.label }}
+                {{ form.tlf_movil(class="form-control", placeholder="Teléfono móvil") }}
+              </div>
+              <div>
+                {{ form.correo.label }}
+                {{ form.correo(class="form-control", placeholder="Correo electrónico") }}
+                {% if form.correo.errors %}
+                  {% for error in form.correo.errors %}
+                  <span style="color: red;">{{ error }}</span>
+                  {% endfor %}
+                {% endif %}
+              </div>
+            <div class="margin_top_button">
+                {{ form.submit(class="btn btn-primary btn-block") }}
+            </div>
+          </fieldset>
+    </form>
+    </div>
+    <div class="container">
+        <div>
+            <!--usamos el sistema 'flash messages' para mostrar un mensaje de éxito o error-->
+            {% with messages = get_flashed_messages(with_categories=True) %}
+              {% if messages %}
+                <ul class="flash-messages">
+                  {% for category, message in messages %}
+                    <li class="alert alert-dismissible alert-{{ category }}">
+                      {{ message }}
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+{% endblock %}

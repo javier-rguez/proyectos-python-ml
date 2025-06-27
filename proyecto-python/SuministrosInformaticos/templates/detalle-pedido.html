@@ -1,0 +1,63 @@
+{% extends 'pedidos.html' %} <!-- hereda de pedidos.html para aprovechar su cabecera -->
+
+{% block title %}
+    <title>Administrador: acceso a detalle de un pedido</title>
+{% endblock %}
+
+{% block content %}
+    <table class="table table-hover">
+      <thead> <!--cabecera principal de nuestra tabla de pedidos-->
+        <tr class="table-dark size_row_ventas">
+          <th scope="col">Nº Pedido: {{ pedido.id_pedido }}</th>
+          <th scope="col">Fecha: {{ pedido.fecha.strftime('%d-%m-%Y') }}</th>
+          <th scope="col">Cliente: {{ pedido.rel_proveedor.nombre }}</th>
+          <th scope="col">Total Neto: {{ pedido.total_neto }}€</th>
+          <th scope="col">Impuestos: {{ (pedido.total_neto * pedido.impuesto) | round(2) }}€</th>
+          <th scope="col">Total Pedido: {{ pedido.total }}€</th>
+          <th scope="col"></th>
+        </tr>
+        <tr class="table-info">
+          <th scope="col"></th>
+          <th scope="col">Referencia</th>
+          <th scope="col">Artículo</th>
+          <th scope="col">Cantidad</th>
+          <th scope="col">Precio proveedor</th>
+          <th scope="col">Total artículo</th>
+          <th scope="col" class="text-center">
+              <!--botón del enlace de regreso a la pantalla anterior-->
+              <a href="/protected_admin/pedidos" title="Volver">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="white" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
+                  </svg>
+              </a>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <!--Recorremos la lista del pedido para acceder a los detalles de la misma, así como a través de las
+           relaciones con clases Detalle_pedido y Articulo para extraer la información de los campos deseados -->
+        {% for detalle in pedido.rel_pedido_detalle %}
+        <tr>
+          <th scope="row">{{ loop.index }}</th>
+          <td>{{ detalle.rel_pedido_articulo.referencia}}</td>
+          <td>{{ detalle.rel_pedido_articulo.nombre }}</td>
+          <td>{{ detalle.cantidad }}</td>
+          <td>{{ detalle.rel_pedido_articulo.precio_proveedor }}€</td>
+          <td>{{ (detalle.rel_pedido_articulo.precio_proveedor * detalle.cantidad) | round(2) }}€</td>
+          <td class="text-center">
+              <!--icono de eliminar que permite eliminar el artículo del pedido actual-->
+              <a href="/protected_admin/crear_pedido/eliminar_articulo/{{detalle.id_detalle_pedido}}">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                       class="bi bi-x-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647
+                        2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5
+                        0 0 1 0-.708"/>
+                  </svg>
+              </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+{% endblock %}

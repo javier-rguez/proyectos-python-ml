@@ -1,0 +1,45 @@
+/* estilo de la barra de navegación cuando un campo es seleccionado: letra en negrita y subrayada*/
+.text-bold-underline {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+/* estilo de letra color blanca para la barra de navegación */
+.text-light {
+  color: #FFFFFF;
+}
+
+/* estilo de centrado de texto */
+.text-center {
+  text-align: center;
+}
+
+/* estilo de alineado de texto a la derecha */
+.text-right {
+  text-align: right;
+}
+
+/* estilo que agrega 10px de espacio en la parte superior */
+.margin_top_button {
+  margin-top: 10px;
+}
+
+.left {
+  margin-right: 20px; /* espacio entre las cards */
+}
+
+.right {
+  margin-left: 20px; /* espacio entre las cards */
+}
+
+/* estilo para letra del los mensajes de éxito de los formularios WTF */
+.flash-message {
+    font-size: 16px;
+}
+
+/* estilo para letra de la cabecera de la información detalle de las ventas y pedidos*/
+.size_row_ventas {
+    font-size: 16px;
+}
+
+

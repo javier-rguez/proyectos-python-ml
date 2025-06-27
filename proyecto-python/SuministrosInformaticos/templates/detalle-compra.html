@@ -1,0 +1,53 @@
+{% extends 'mis-compras.html' %} <!-- hereda de mis-compras.html para aprovechar su cabecera -->
+
+{% block title %}
+    <title>Administrador: acceso a detalle de una compra</title>
+{% endblock %}
+
+{% block content %}
+    <table class="table table-hover">
+      <thead> <!--cabecera principal de nuestra tabla de ventas (compras para el cliente)-->
+        <tr class="table-dark size_row_ventas">
+          <th scope="col">Nº Compra: {{ venta.id_venta }}</th>
+          <th scope="col">Fecha: {{ venta.fecha.strftime('%d-%m-%Y') }}</th>
+          <th scope="col">Cliente: {{ venta.rel_cliente.nombre }}</th>
+          <th scope="col">Total Neto: {{ venta.total_neto | round(2) }}€</th>
+          <th scope="col">Impuestos: {{ (venta.total_neto * venta.impuesto) | round(2) }}€</th>
+          <th scope="col">Total Compra: {{ venta.total | round(2) }}€</th>
+          <th scope="col"></th>
+        </tr>
+        <tr class="table-info">
+          <th scope="col"></th>
+          <th scope="col">Referencia</th>
+          <th scope="col">Artículo</th>
+          <th scope="col">Cantidad</th>
+          <th scope="col">Precio</th>
+          <th scope="col">Total artículo</th>
+          <th scope="col" class="text-center">
+              <!--botón del enlace para que nos lleva a la pantalla anterior-->
+              <a href="/protected/mis_compras" title="Volver">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="white" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
+                  </svg>
+              </a>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <!--Recorremos la lista de la venta (compra para el cliente para acceder a los detalles de la misma, así como a
+            través de las relaciones con clases Detalle_venta y Articulo para extraer la información de los campos
+            deseados -->
+        {% for detalle in venta.rel_detalle %}
+        <tr>
+          <th scope="row">{{ loop.index }}</th>
+          <td>{{ detalle.rel_articulo.referencia}}</td>
+          <td>{{ detalle.rel_articulo.nombre }}</td>
+          <td>{{ detalle.cantidad }}</td>
+          <td>{{ detalle.rel_articulo.precio_venta }}€</td>
+          <td>{{ detalle.rel_articulo.precio_venta * detalle.cantidad }}€</td>
+          <td></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+{% endblock %}

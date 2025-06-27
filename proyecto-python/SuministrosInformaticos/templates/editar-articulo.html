@@ -1,0 +1,219 @@
+<!-- plantilla para acceder al formulario de edición de un artículo seleccionado-->
+<!-- plantilla hija: usamos Jinja para aplicar herencia en html -->
+{% extends 'articulos.html' %} <!-- hereda de articulos.html para aprovechar su cabecera -->
+
+{% block title %}
+    <title>Administrador: editar artículo</title>
+{% endblock %}
+
+{% block content %}
+
+    <div class="container card border-primary mb-3 justify-content-center" style="max-width: 30rem;">
+        <div class="card-body">
+            <div class="text-right">
+                <!--botón del enlace para que nos lleva a la pantalla anterior-->
+                <a href="/protected_admin/articulos?page=1" title="Volver">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor"
+                       class="bi bi-plus-circle" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16
+                        0m-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5
+                        0 1 1 .708.708L5.707 7.5z"/>
+                  </svg>
+                </a>
+            </div>
+            <h3 class="card-title">Editar artículo</h3>
+        </div>
+        <!-- formulario que envía los datos introducidos por el usuario-->
+        <!--método que genera un campo oculto que contiene un token CSRF para proteger la app contra ataques CSRF-->
+        <form method="post" novalidate>
+          {{ form.hidden_tag() }}
+          <fieldset>
+            <h5><b>Cumplimente solamente los campos que desea modificar.</b></h5>
+            <!--Enviamos como parámetro oculto el parámetro id_articulo-->
+            <input type="hidden" id="id_articulo" name="id_articulo" value="{{ articulo.id_articulo }}">
+            <div>
+              {{ form.referencia.label }}
+              {{ form.referencia(class="form-control") }}
+              {% if form.referencia.errors %}
+                  {% for error in form.referencia.errors %}
+                  <span style="color: red;">{{ error }}</span>
+                  {% endfor %}
+              {% endif %}
+            </div>
+            <div>
+              {{ form.nombre.label }}
+              {{ form.nombre(class="form-control") }}
+              {% if form.nombre.errors %}
+                  {% for error in form.nombre.errors %}
+                  <span style="color: red;">{{ error }}</span>
+                  {% endfor %}
+              {% endif %}
+            </div>
+            <div>
+              {{ form.marca.label }}
+              {{ form.marca(class="form-control") }}
+              {% if form.marca.errors %}
+                  {% for error in form.marca.errors %}
+                  <span style="color: red;">{{ error }}</span>
+                  {% endfor %}
+              {% endif %}
+            </div>
+            <div>
+              {{ form.precio_venta.label }}
+              {{ form.precio_venta(class="form-control", placeholder="Precio") }}
+              {% if form.precio_venta.errors %}
+                  {% for error in form.precio_venta.errors %}
+                  <span style="color: red;">{{ error }}</span>
+                  {% endfor %}
+              {% endif %}
+            </div>
+            <div>
+              {{ form.stock.label }}
+              {{ form.stock(class="form-control") }}
+              {% if form.stock.errors %}
+                  {% for error in form.stock.errors %}
+                  <span style="color: red;">{{ error }}</span>
+                  {% endfor %}
+              {% endif %}
+            </div>
+            <div>
+            <div>
+              <!--El campo categoría está desactivado para que se pueda editar, ya que ha sido seleccionado
+              en la ventana seleccionar-categoria.html-->
+              <fieldset disabled="">
+                  <label class="form-label" for="cat">Categoría</label>
+                  <input class="form-control" id="cat" name="cat" type="text" placeholder="{{ articulo.categoria }}"
+                         disabled="">
+              </fieldset>
+              <!--Enviamos como parámetro oculto el parámetro categoria-->
+              <input type="hidden" id="categoria" name="categoria" value="{{ articulo.categoria }}">
+              </div>
+              <div>
+                {{ form.descripcion.label }}
+                {{ form.descripcion(class="form-control", placeholder="Añadir descripción") }}
+              </div>
+              <div>
+                {{ form.ubicacion.label }}
+                {{ form.ubicacion(class="form-control", placeholder="Añadir ubicación") }}
+              </div>
+              <div>
+                {{ form.id_proveedor.label }}
+                <div>
+                    {{ form.id_proveedor }}
+                </div>
+                <div>
+                  {% if form.id_proveedor.errors %}
+                      {% for error in form.id_proveedor.errors %}
+                      <span style="color: red;">{{ error }}</span>
+                      {% endfor %}
+                  {% endif %}
+                </div>
+              </div>
+              <div>
+                {{ form.precio_proveedor.label }}
+                {{ form.precio_proveedor(class="form-control") }}
+                {% if form.precio_proveedor.errors %}
+                  {% for error in form.precio_proveedor.errors %}
+                  <span style="color: red;">{{ error }}</span>
+                  {% endfor %}
+                {% endif %}
+              </div>
+
+              <!--BLOQUE con las CARACTERÍSTICAS PARTICULARES de los artículos según categoría -->
+
+              <div>
+                <!--si la categoría del nuevo artículo es Ordenadores y Tablets añadimos los campos específicos
+                    correspondientes-->
+                {% if articulo.categoria == 'Ordenadores y Tablets' %}
+                    <div>
+                      {{ form.resolucion.label }}
+                      {{ form.resolucion(class="form-control", placeholder="Añadir resolución") }}
+                    </div>
+                    <div>
+                      {{ form.procesador.label }}
+                      {{ form.procesador(class="form-control", placeholder="Añadir procesador") }}
+                    </div>
+                    <div>
+                      {{ form.memoria.label }}
+                      {{ form.memoria(class="form-control", placeholder="Añadir memoria") }}
+                    </div>
+                    <div>
+                      {{ form.almacenamiento.label }}
+                      {{ form.almacenamiento(class="form-control", placeholder="Añadir almacenamiento") }}
+                    </div>
+
+                <!--si la categoría del nuevo artículo es Monitores añadimos los campos específicos para
+                    esta categoria-->
+                {% elif articulo.categoria == 'Monitores' %}
+                    <div>
+                      {{ form.tamanio.label }}
+                      {{ form.tamanio(class="form-control", placeholder="Añadir tamaño") }}
+                    </div>
+                    <div>
+                      {{ form.resolucion.label }}
+                      {{ form.resolucion(class="form-control", placeholder="Añadir resolución") }}
+                    </div>
+                    <div>
+                        {{ form.altura_ajustable.label }}
+                        <div>
+                        {{ form.altura_ajustable(class="form-select") }}
+                        </div>
+                    </div>
+                    </div>
+                    <div>
+                      {{ form.conexiones.label }}
+                      {{ form.conexiones(class="form-control", placeholder="Añadir conexiones") }}
+                    </div>
+                <!--si la categoría del nuevo artículo es Almacenamiento añadimos los campos específicos para
+                    esta categoria-->
+                {% elif articulo.categoria == 'Almacenamiento' %}
+                    <div>
+                      {{ form.tipo.label }}
+                      {{ form.tipo(class="form-control", placeholder="Añadir tipo") }}
+                    </div>
+                    <div>
+                      {{ form.capacidad.label }}
+                      {{ form.capacidad(class="form-control", placeholder="Añadir capacidad") }}
+                    </div>
+                    <div>
+                      {{ form.conexiones.label }}
+                      {{ form.conexiones(class="form-control", placeholder="Añadir conexiones") }}
+                    </div>
+                <!--si la categoría del nuevo artículo es Redes añadimos los campos específicos para
+                    esta categoria-->
+                {% else %}
+                    <div>
+                      {{ form.tipo.label }}
+                      {{ form.tipo(class="form-control", placeholder="Añadir tipo") }}
+                    </div>
+                    <div>
+                      {{ form.conexiones.label }}
+                      {{ form.conexiones(class="form-control", placeholder="Añadir conexiones") }}
+                    </div>
+                {% endif %}
+              </div>
+
+            <div class="margin_top_button">
+            {{ form.submit(class="btn btn-primary btn-block") }}
+            </div>
+
+          </fieldset>
+    </form>
+    </div>
+    <div class="container">
+        <div>
+            <!--usamos el sistema 'flash messages' para mostrar un mensaje de éxito o error-->
+            {% with messages = get_flashed_messages(with_categories=True) %}
+              {% if messages %}
+                <ul class="flash-messages">
+                  {% for category, message in messages %}
+                    <li class="alert alert-dismissible alert-{{ category }}">
+                      {{ message }}
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+{% endblock %}

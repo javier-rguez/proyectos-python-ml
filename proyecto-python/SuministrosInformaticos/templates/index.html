@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Suministros Informáticos: inicio -> login</title>
+    <!-- Hoja de estilo propia -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css')}}">
+
+    <!-- Tema de Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/lumen/bootstrap.min.css"
+          integrity="sha384-GzaBcW6yPIfhF+6VpKMjxbTx6tvR/yRd/yJub90CqoIn2Tz4rRXlSpTFYMKHCifX" crossorigin="anonymous">
+</head>
+<body>
+    <main class="container p-4">
+        <h1 class="display-4 text-center mt-4">Suministros Informáticos</h1>
+
+        <!-- Creación del objeto card para el login de acesso-->
+        <div class="col-md-4 offset-md-4 my-auto card border-primary mb-3" style="max-width: 20rem;">
+            <div class="card-header text-center"><h3>Portal de acceso</h3></div>
+            <div class="card-body">
+                <form action="" method="post" novalidate> <!--enviamos los datos del formulario a la ruta especificada-->
+                    <!--método que genera un campo oculto que contiene un token CSRF para proteger la app contra ataques CSRF-->
+                    {{ form.hidden_tag() }}
+                    <fieldset>
+                        <div>
+                          {{ form.username.label }}
+                          {{ form.username(class="form-control", placeholder="Introduzca el NIF del cliente") }}
+                          {% if form.username.errors %}
+                              {% for error in form.username.errors %}
+                              <span style="color: red;">{{ error }}</span>
+                              {% endfor %}
+                          {% endif %}
+                        </div>
+                        <div>
+                          {{ form.password.label }}
+                          {{ form.password(class="form-control", placeholder="Introduzca la contraseña") }}
+                          {% if form.password.errors %}
+                              {% for error in form.password.errors %}
+                              <span style="color: red;">{{ error }}</span>
+                              {% endfor %}
+                          {% endif %}
+                        </div>
+                        <div>
+                          {{ form.type_user.label }}
+                          {{ form.type_user(class="form-control") }}
+                          {% if form.type_user.errors %}
+                              {% for error in form.type_user.errors %}
+                              <span style="color: red;">{{ error }}</span>
+                              {% endfor %}
+                          {% endif %}
+                        </div>
+                        <div class="margin_top_button">
+                            {{ form.submit(class="btn btn-primary btn-block") }}
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </main>
+    <div class="container">
+            <!--usamos el sistema 'flash messages' para mostrar un mensaje de éxito o error-->
+            {% with messages = get_flashed_messages(with_categories=True) %}
+              {% if messages %}
+                <ul class="flash-messages">
+                  {% for category, message in messages %}
+                    <li class="alert alert-dismissible alert-{{ category }}">
+                      {{ message }}
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            {% endwith %}
+    </div>
+</body>
+</html>

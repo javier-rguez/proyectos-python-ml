@@ -1,0 +1,61 @@
+{% extends 'nuevo-analisis.html' %} <!-- hereda de nuevo-analisis.html para aprovechar su cabecera -->
+
+{% block title %}
+<title>Administrador: acceso a análisis de ventas y pedidos</title>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 p-0">
+        <table class="table table-hover">
+            <thead> <!--cabecera principal de nuestra tabla donde introducimos nuestro gráfico-->
+                <tr class="table-secondary text-center">
+                  <th scope="col">Gráfico {{ modelo }}s</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td align="center">
+                        <!--hacemos la imagen reponsive con la clase img-fluid de Bootstrap-->
+                        <img src="/{{ img_path }}" alt="Análisis financiero" class="img-fluid">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-4 p-0">
+        <table class="table table-hover">
+            <thead> <!--cabecera principal de nuestra tabla de datos-->
+                <tr class="table-info">
+                  <th scope="col">Periodo</th>
+                  <th scope="col">Ingresos</th>
+                  <th scope="col">Gastos</th>
+                  <th scope="col">Beneficios</th>
+                  <th scope="col" align="center">
+                    <!--botón del enlace para que nos lleva a la pantalla anterior-->
+                      <a href="/protected_admin/nuevo_analisis" title="Volver">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="white"
+                               class="bi bi-plus-circle" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0
+                                1 16 0m-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1
+                                0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
+                          </svg>
+                        </a>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <!--usamos Jinja para introducir código Python en html-->
+                {% for fila in datos_grafico %} <!--recorremos la lista de ventas e introducimos los datos fila por fila -->
+                <tr>
+                    <td>{{ fila.periodicidad }}</td>
+                    <td>{{ fila.ingresos | round(2) }}€</td>
+                    <td>{{ fila.gastos | round(2) }}€</td>
+                    <td>{{ fila.beneficios | round(2) }}€</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,91 @@
+<!-- plantilla hija: usamos Jinja para aplicar herencia en html -->
+{% extends 'proveedores.html' %} <!-- hereda de proveedores.html para aprovechar su cabecera -->
+
+{% block title %}
+    <title>Administrador: crear nuevo proveedor</title>
+{% endblock %}
+
+{% block content %}
+<!------------>
+    <table class="table table-hover">
+      <thead>
+        <tr class="table-dark size_row_ventas">
+          <th scope="col">Id: {{ proveedor.id_proveedor }}</th>
+          <th scope="col">Proveedor: {{ proveedor.nombre }}</th>
+          <th scope="col">NIF: {{ proveedor.nif }}</th>
+          <th scope="col"></th>
+          <th scope="col">Contacto: {{ proveedor.contacto }}</th>
+          <th scope="col">Tlf fijo: {{ proveedor.tlf_fijo }}</th>
+          <th scope="col">Tlf móvil: {{ proveedor.tlf_movil }}</th>
+          <th scope="col">Correo: {{ proveedor.correo }}</th>
+          <th scope="col"></th>
+        </tr><!--cabecera principal de nuestra tabla de artículos-->
+        <tr class="table-info">
+          <th scope="col">Id</th>
+          <th scope="col">Referencia</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">Marca</th>
+          <th scope="col">Precio</th>
+          <th scope="col">Stock</th>
+          <th scope="col">Categoría</th>
+          <th scope="col">Precio prov.</th>
+          <th scope="col" class="text-center">
+              <!--botón del enlace para que nos lleva a la pantalla anterior-->
+              <a href="/protected_admin/proveedores" title="Volver">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="white" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
+                  </svg>
+              </a>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for articulo in lista_articulos %} <!--recorremos la lista de artículos e introducimos los datos fila por fila -->
+        <tr>
+          <th scope="row">{{ articulo.id_articulo }}</th>
+          <td>{{ articulo.referencia }}</td>
+          <td>{{ articulo.nombre }}</td>
+          <td>{{ articulo.marca }}</td>
+          <td>{{ articulo.precio_venta }}</td>
+          <td>{{ articulo.stock }}</td>
+          <td>{{ articulo.categoria }}</td>
+          <td>{{ articulo.precio_proveedor }}</td>
+          <td class="text-center">
+              <!--icono de información que muestra las características particulares del artículo en cuestión-->
+              <a href="/protected_admin/articulos/info_adicional/{{articulo.id_articulo}}"
+                 title="Información adicional de artículo">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                       class="bi bi-info-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                    <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105
+                        1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275
+                        0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                  </svg>
+              </a>
+              <!--icono de editar que permite acceder a la ventana de edición del artículo-->
+              <a href="/protected_admin/articulos/editar_articulo/{{articulo.id_articulo}}"  title="Editar artículo">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                       class="bi bi-pencil" viewBox="0 0 16 16">
+                    <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0
+                        0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5
+                        3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528
+                        3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                  </svg>
+              </a>
+              <!--icono de eliminar que permite eliminar el artículo en  cuestión-->
+              <a href="/protected_admin/articulo/confirmar_eliminar/{{articulo.id_articulo}}" title="Eliminar artículo">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                       class="bi bi-x-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647
+                        2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0
+                        0 1 0-.708"/>
+                  </svg>
+              </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+<!------------>
+{% endblock %}

@@ -1,0 +1,83 @@
+<!-- plantilla hija: usamos Jinja para aplicar herencia en html -->
+{% extends 'usuarios.html' %} <!-- hereda de usuarios.html para aprovechar su cabecera -->
+
+{% block title %}
+    <title>Administrador: editar usuario</title>
+{% endblock %}
+
+{% block content %}
+
+    <div class="container card border-primary mb-3 justify-content-center" style="max-width: 30rem;">
+        <div class="card-body">
+            <div class="text-right">
+                <!--botón del enlace para que nos lleva a la pantalla anterior-->
+                <a href="/protected_admin/usuarios" title="Volver">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor"
+                       class="bi bi-plus-circle" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16
+                        0m-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5
+                        0 1 1 .708.708L5.707 7.5z"/>
+                  </svg>
+                </a>
+            </div>
+            <h3 class="card-title">Editar usuario</h3>
+        </div>
+        <!-- formulario realizado con Flask WTF que envía los datos introducidos por el usuario a la ruta indicada-->
+        <form method="post" novalidate>
+          <!--método que genera un campo oculto que contiene un token CSRF para proteger la app contra ataques CSRF-->
+          {{ form.hidden_tag() }}
+          <fieldset>
+            <h5><b>Cumplimente solamente los campos que desea modificar.</b></h5>
+            <!--Enviamos como parámetro oculto el parámetro id del usuario-->
+            <input type="hidden" id="id" name="id" value="{{ usuario.id }}">
+            <div>
+                {{ form.username.label }}
+                {{ form.username(class="form-control", placeholder="Introduzca el nombre de usuario") }}
+                {% if form.username.errors %}
+                    {% for error in form.username.errors %}
+                        <span style="color: red;">{{ error }}</span>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div>
+                {{ form.password.label }}
+                {{ form.password(class="form-control", placeholder="Introduzca la contraseña actual o una nueva si desea modificar") }}
+                {% if form.password.errors %}
+                    {% for error in form.password.errors %}
+                        <span style="color: red;">{{ error }}</span>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div>
+                {{ form.type_user.label }}
+                {{ form.type_user(class="form-control") }}
+                {% if form.type_user.errors %}
+                    {% for error in form.type_user.errors %}
+                        <span style="color: red;">{{ error }}</span>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="margin_top_button">
+                {{ form.submit(class="btn btn-primary btn-block") }}
+            </div>
+          </fieldset>
+    </form>
+    </div>
+    <div class="container">
+        <div>
+            <!--usamos el sistema 'flash messages' para mostrar un mensaje de éxito tras la creación, edición o
+            eliminación de un registro-->
+            {% with messages = get_flashed_messages(with_categories=True) %}
+              {% if messages %}
+                <ul class="flash-messages">
+                  {% for category, message in messages %}
+                    <li class="alert alert-dismissible alert-{{ category }}">
+                      {{ message }}
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+{% endblock %}

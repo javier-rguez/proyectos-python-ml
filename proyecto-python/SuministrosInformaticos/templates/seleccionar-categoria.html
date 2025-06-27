@@ -1,0 +1,45 @@
+<!-- plantilla para seleccionar la categoría de un nuevo artículo antes de su creación-->
+<!-- plantilla hija: usamos Jinja para aplicar herencia en html -->
+{% extends 'articulos.html' %} <!-- hereda de articulos.html para aprovechar su cabecera -->
+
+{% block title %}
+    <title>Administrador: acceso a seleccionar categoría</title>
+{% endblock %}
+
+{% block content %}
+<div class="container card border-primary mb-3 justify-content-center" style="max-width: 30rem;">
+
+        <div class="card-body">
+            <div class="text-right">
+                <!--botón del enlace para que nos lleva a la pantalla anterior-->
+                <a href="/protected_admin/articulos?page=1" title="Volver">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
+                  </svg>
+                </a>
+            </div>
+            <h3 class="card-title">Nuevo artículo</h3>
+        </div>
+        <!-- formulario que envía los datos introducidos por el usuario a la ruta indicada-->
+        <form action="/protected_admin/articulos/crear_articulo" method="post">
+          <fieldset>
+            <h5><b>En primer lugar seleccione la categoría del nuevo artículo:</b></h5>
+            <div>
+              <label for="categoria" class="form-label mt-2">Categoría</label>
+              <div>
+                  <select class="form-select" id="categoria" name="categoria">
+                    <option>Ordenadores y Tablets</option>
+                    <option>Monitores</option>
+                    <option>Almacenamiento</option>
+                    <option>Redes</option>
+                  </select>
+              </div>
+
+            </div>
+            <div class="margin_top_button">
+            <button type="submit" class="btn btn-primary btn-block">Guardar selección de categoría</button>
+            </div>
+          </fieldset>
+        </form>
+    </div>
+{% endblock %}

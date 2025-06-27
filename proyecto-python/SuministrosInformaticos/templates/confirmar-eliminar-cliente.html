@@ -1,0 +1,77 @@
+<!-- plantilla hija: usamos Jinja para aplicar herencia en html -->
+{% extends 'clientes.html' %} <!-- hereda de clientes.html para aprovechar su cabecera -->
+
+{% block title %}
+    <title>Administrador: eliminar cliente</title>
+{% endblock %}
+
+{% block content %}
+
+    <table class="table table-hover">
+      <thead> <!--cabecera principal de nuestra tabla de clientes-->
+        <tr class="table-info">
+          <th scope="col">Id</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">NIF</th>
+          <th scope="col">Dirección</th>
+          <th scope="col">Contacto</th>
+          <th scope="col">Tlf fijo</th>
+          <th scope="col">Tlf móvil</th>
+          <th scope="col">Correo</th>
+          <th scope="col">Forma de pago</th>
+          <th scope="col" class="text-center">
+              <a href="/protected_admin/clientes" title="Volver">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="white" class="bi bi-plus-circle"
+                       viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16
+                        0m-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5
+                        0 1 1 .708.708L5.707 7.5z"/>
+                  </svg>
+              </a>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <!--usamos Jinja para introducir código Python en html-->
+        <tr>
+          <th scope="row">{{ registro.id_cliente }}</th>
+          <td>{{ registro.nombre }}</td>
+          <td>{{ registro.nif }}</td>
+          <td>{{ registro.direccion }}</td>
+          <td>{{ registro.contacto }}</td>
+          <td>{{ registro.tlf_fijo }}</td>
+          <td>{{ registro.tlf_movil }}</td>
+          <td>{{ registro.correo }}</td>
+          <td>{{ registro.forma_pago }}</td>
+          <td class="text-center">
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!--Muestra los botones para confirmar o cancelar la eliminación del cliente mostrados en una card-->
+    <div>
+        <div class="container card border-primary mb-3 justify-content-center" style="max-width: 30rem;">
+            <div class="card-body">
+                <h3 class="card-title">Eliminar cliente</h3>
+                <h6>¿Está seguro que desea eliminar el cliente seleccionado?</h6>
+            </div>
+            <form action="{{ url_for('eliminar_registro', area='cliente', id_registro=registro.id_cliente) }}" method="post" novalidate> <!--ruta del formulario-->
+                <!--método que genera un campo oculto que contiene un token CSRF para proteger la app contra ataques CSRF-->
+                {{ form.hidden_tag() }}
+                <fieldset>
+                    <div class="margin_top_button">
+                        {{ form.submit(class="btn btn-primary btn-block") }}
+                    </div>
+                    <div></div>
+                    <div class="margin_top_button">
+                        <a href="/protected_admin/clientes">
+                            <button type="button" class="btn btn-secondary btn-block">Cancelar</button>
+                        </a>
+                    </div>
+
+                </fieldset>
+            </form>
+        </div>
+    </div>
+{% endblock %}
