@@ -10,11 +10,14 @@ Este directorio contiene una selección de pequeños proyectos desarrollados dur
 2. **Trabajo de aplicación de Árboles de Decisión (especialización ML)**
    Implementación y visualización de árboles de clasificación para problemas supervisados.
 
-4. **Trabajo de aplicación de regularización Lasso y Ridge (especialización ML)**
+3. **Trabajo de aplicación de regularización Lasso y Ridge (especialización ML)**
    Comparación de técnicas de regularización en modelos de regresión lineal para evitar sobreajuste.
 
-6. **Trabajo de aplicación de interpretabilidad con SHAP (especialización ML)**
+4. **Trabajo de aplicación de interpretabilidad con SHAP (especialización ML)**
    Análisis de la importancia de variables usando valores SHAP en modelos de Machine Learning.
+
+5. **Clustering: agrupamiento jerárquico**
+   Explorar patrones naturales en los datos y demostrar el funcionamiento del agrupamiento jerárquico como técnica exploratoria no supervisada.
 
 ---
 
