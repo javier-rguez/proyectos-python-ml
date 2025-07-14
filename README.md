@@ -14,5 +14,6 @@ Ejemplos:
 - Trabajo de aplicación de árboles de decisión (especialización ML).
 - Trabajo de aplicación de interpretabilidad con SHAP (especialización ML).
 - Trabajo de aplicación de la regularizacion Lasso y Ridge (especialización ML).
+- Trabajo de aplicación de clustering (especialización ML).
 
 ⚠️ Este repositorio está disponible públicamente solo con fines de revisión técnica. Por favor, no redistribuir.
