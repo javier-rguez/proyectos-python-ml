@@ -13,7 +13,7 @@ Desarrollar un modelo de clasificación capaz de predecir el nivel de gravedad (
 - Modelos supervisados: Árboles de decisión, Random Forest y Gradient Boosting.
 - Evaluación del rendimiento (accuracy, F1-score, matriz de confusión)
 
-## Importante
+## Importante ⚠️
 
 Este proyecto fue desarrollado como trabajo final de la **especialización en Inteligencia Artificial**. En ese momento, **aún no se habían abordado técnicas de validación cruzada ni regularización**, por lo que **no están incluidas** en este análisis.
 
