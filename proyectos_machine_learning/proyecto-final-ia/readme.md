@@ -15,7 +15,7 @@ Desarrollar un modelo de clasificación capaz de predecir el nivel de gravedad (
 
 ## Importante ⚠️
 
-Este proyecto fue desarrollado como trabajo final de la **especialización en Inteligencia Artificial**. En ese momento, **aún no se habían abordado técnicas de validación cruzada ni regularización**, por lo que **no están incluidas** en este análisis.
+Este proyecto fue desarrollado como trabajo final de la **especialización en Inteligencia Artificial**. En ese momento, **aún no se habían abordado técnicas como la validación cruzada**, por lo que **no están incluidas** en este análisis.
 
 Actualmente estoy cursando la especialización en **Machine Learning**, donde estoy profundizando en estas y otras técnicas avanzadas (regularización Lasso/Ridge, validación cruzada, interpretabilidad con SHAP, etc.), reflejadas en otros proyectos de este repositorio.
 
